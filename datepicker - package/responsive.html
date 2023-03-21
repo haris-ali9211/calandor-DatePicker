@@ -34,7 +34,7 @@
 
   <body>
     <style>
-      .input {
+      /* .input {
         width: 100%;
         max-width: 220px;
         height: 45px;
@@ -106,19 +106,19 @@
         width: 282px;
         background: transparent;
         padding: 10px;
-        /* padding-right: 32px; */
+        /* padding-right: 32px; 
         border-radius: 1rem;
       }
 
       .locationButtonSelect:hover {
         background: #e5e4e2;
         padding: 10px;
-        /* padding-right: 32px; */
+        /* padding-right: 32px; 
 
         border-radius: 1rem;
       }
       .locationInput {
-        /* font-size: 10px; */
+        /* font-size: 10px; 
         font-weight: 600;
       }
       .searchButton {
@@ -138,24 +138,81 @@
         font-weight: 600;
         width: 230px;
         margin: 10px;
+      } */
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        /* background-color: #0c877b; */
+        border: none;
+        padding: 5px;
+        border-radius: 10px;
+      }
+
+      .location-select,
+      .move-in,
+      .move-out {
+        width: 100%;
+        max-width: 220px;
+        height: 45px;
+        margin: 10px;
+      }
+
+      .search-label {
+        color: #fff;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      select,
+      input[type="text"] {
+        width: 100%;
+        height: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1.5px solid lightgrey;
+        outline: none;
+        transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        box-shadow: 0px 0px 20px -18px;
+      }
+
+      select:hover,
+      input[type="text"]:hover {
+        border: 2px solid lightgrey;
+        box-shadow: 0px 0px 20px -17px;
+      }
+
+      select:active,
+      input[type="text"]:active {
+        transform: scale(0.95);
+      }
+
+      select:focus,
+      input[type="text"]:focus {
+        border: 2px solid grey;
+      }
+
+      .search-button {
+        background: #08786c;
+        border-radius: 1rem;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        width: 230px;
+        height: 40px;
+        margin: 10px;
+      }
+
+      .search-button:hover {
+        background: #0c877b;
       }
     </style>
 
-    <div
-      style="
-        width: 100%;
-        display: flex;
-        
-        background-color: #0c877b;
-        border: none  ;
-        padding: 5px;
-        /* margin: 60px auto; */
-        border-radius: 10px;
-      "
-    >
-      <div class="locationButtonSelect">
-        <label class="searchLabel">Location</label>
-        <select style="width: 100%" id="dropdown" name="dropdown">
+    <div class="container">
+      <div class="location-select">
+        <label class="search-label">Location</label>
+        <select id="dropdown" name="dropdown">
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
           <option value="option3">Option 3</option>
@@ -163,43 +220,38 @@
         </select>
       </div>
 
-      <div class="locationButton">
-        <label class="searchLabel">Move-in</label>
-        <input
-          class="locationInput input"
-          type="text"
-          name="datein"
-          placeholder="When?"
-        />
+      <div class="move-in">
+        <label class="search-label">Move-in</label>
+        <input type="text" name="datein" placeholder="When?" />
       </div>
 
-      <div class="locationButton">
-        <label class="searchLabel">Move-out</label>
-        <input
-          class="locationInput input"
-          type="text"
-          name="dateout"
-          placeholder="How long?"
-        />
+      <div class="move-out">
+        <label class="search-label">Move-out</label>
+        <input type="text" name="dateout" placeholder="How long?" />
       </div>
-      <button class="searchButton">Search</button>
+
+      <button class="search-button">Search</button>
     </div>
 
     <script>
       $(function () {
-        $('input[name="datein"]').daterangepicker(
+        var moveInInput = $('input[name="datein"]');
+        var moveOutInput = $('input[name="dateout"]');
+
+        // Set initial placeholders
+        moveInInput.attr("placeholder", "Move-in");
+        moveOutInput.attr("placeholder", "Move-out");
+
+        // Update placeholders on date range selection
+        moveInInput.daterangepicker(
           {
             opens: "center",
             minDate: moment(),
             autoUpdateInput: false,
           },
           function (start, end, label) {
-            console.log(
-              "A new date selection was made: " +
-                start.format("YYYY-MM-DD") +
-                " to " +
-                end.format("YYYY-MM-DD")
-            );
+            moveInInput.attr("placeholder", start.format("MMM D, YYYY"));
+            moveOutInput.attr("placeholder", end.format("MMM D, YYYY"));
           }
         );
       });
